@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">MemoAppWithServer_Kotlin_ver</string>
+    <string name="action_settings">Settings</string>
+
+    <!--Server -->
+    <!--Server End -->
+
+    <!--Texts -->
+    <string name="DeleteMemo">메모 지우기</string>
+    <string name="DeleteMemoQuest">메모를 지우시겠습니까?</string>
+
+    <string name="Accept">지우기</string>
+    <string name="Refuse">취소</string>
+    <!--Texts End -->
+</resources>
