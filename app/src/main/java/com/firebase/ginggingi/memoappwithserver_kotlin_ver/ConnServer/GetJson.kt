@@ -1,11 +1,9 @@
 package com.firebase.ginggingi.memoappwithserver_kotlin_ver.ConnServer
 
-import android.os.AsyncTask
+import android.util.Log
 import android.widget.Toast
 import com.firebase.ginggingi.memoappwithserver_kotlin_ver.Interfaces.GetJsonModel
 import com.firebase.ginggingi.memoappwithserver_kotlin_ver.MainActivity
-import org.json.JSONArray
-import java.util.*
 
 /**
  * Created by GingGingI on 2018-05-16.
@@ -50,6 +48,7 @@ class GetJson: GetJsonModel {
         while (!SConn.isComplete) {
             Thread.sleep(100)
             TimeWaited += 0.1
+            Log.i(TAG, String.format("%.1f", TimeWaited) + "...${SConn.isComplete} || ${SConn.isGetError}")
         }
         if (SConn.isComplete) {
             if (SConn.isGetError){

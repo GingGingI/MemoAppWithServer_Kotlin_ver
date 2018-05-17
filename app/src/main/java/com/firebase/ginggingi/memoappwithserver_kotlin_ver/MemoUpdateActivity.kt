@@ -1,7 +1,6 @@
 package com.firebase.ginggingi.memoappwithserver_kotlin_ver
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.design.widget.FloatingActionButton
 import android.text.TextUtils
 import android.view.View
@@ -26,8 +25,8 @@ class MemoUpdateActivity: ActivityBase(), View.OnClickListener {
 
     var idx: Int = -1
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_updatememo)
         Init()
         ViewInit()

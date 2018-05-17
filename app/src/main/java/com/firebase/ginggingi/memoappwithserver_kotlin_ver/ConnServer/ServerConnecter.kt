@@ -1,9 +1,11 @@
 package com.firebase.ginggingi.memoappwithserver_kotlin_ver.ConnServer
 
-import android.content.Context
 import android.os.AsyncTask
-import android.system.Os
-import java.io.*
+import android.util.Log
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
@@ -13,17 +15,13 @@ import java.net.URL
  */
 class ServerConnecter {
 
-    private var ServerTask: ServerConnTask
+    private lateinit var ServerTask: ServerConnTask
 
     private var url: String
-    private var datas: String? = null
     private var result: String? = null
-    var isComplete = false
-    var isGetError = false
-
-    init {
-        ServerTask = ServerConnTask()
-    }
+    open var datas: String? = null
+    open var isComplete = false
+    open var isGetError = false
 
     constructor(url: String) {
         this.url = url
@@ -37,7 +35,7 @@ class ServerConnecter {
     }
 
     fun getDatas() {
-        ServerTask.setDatas(this, url, datas)
+        ServerTask = ServerConnTask(this, url, datas)
         ServerTask.execute()
     }
 
@@ -45,18 +43,17 @@ class ServerConnecter {
         return result
     }
 
-    private class ServerConnTask: AsyncTask<Void, Void, String>() {
-
+    private class ServerConnTask(SConn: ServerConnecter, url: String, datas: String?) : AsyncTask<Void, Void, String>() {
         var isWorking = false
 
-        lateinit var url: String
-        lateinit var SConn: ServerConnecter
-        var datas: String? = null
+        var url: String
+        var SConn: ServerConnecter
+        var datas: String?
 
         lateinit var br: BufferedReader
         lateinit var urlConn: HttpURLConnection
 
-        fun setDatas(SConn: ServerConnecter, url: String, datas: String?) {
+        init {
             this.SConn = SConn
             this.url = url
             this.datas = datas
@@ -77,13 +74,19 @@ class ServerConnecter {
             }catch (e: MalformedURLException) {
                 SConn.isGetError = true
                 e.printStackTrace()
-            }catch (e: IOException) {
-                SConn.isGetError = true
-                e.printStackTrace()
             }finally {
                 closeConnecter()
-                return result
             }
+            //onpostExecute 실행안댐..?
+            SConn.result = result
+            SConn.isComplete = true
+            isWorking = false
+            return result
+        }
+
+        override fun onPostExecute(result: String?) {
+            super.onPostExecute(result)
+            Log.i("onPost", "it is called after Thread end")
         }
 
         fun openConnecter() {
@@ -92,8 +95,6 @@ class ServerConnecter {
         }
         fun closeConnecter() {
             try {
-                if (br != null)
-                    br.close()
                 if (urlConn != null)
                     urlConn.disconnect()
             } catch (e: IOException) {
@@ -109,19 +110,20 @@ class ServerConnecter {
             }
 //            스트링버퍼 생성
             val sb = StringBuffer()
-            br = BufferedReader(InputStreamReader(urlConn.inputStream))
+            br = BufferedReader(InputStreamReader(urlConn.inputStream, "UTF-8"))
 
-            var lines: String? = null
+            var lines: String = ""
 //            긁어옴
-            while ((lines == br!!.readLine()) != null) {
-                if (lines != "")
-                    sb.append(lines)
+            for (lines in br.readLine()) {
+                if (lines == null) { break }
+                sb.append(lines)
             }
 //            리턴
             return sb.toString()
         }
 
         fun PostData(datas: String?) {
+//            문제발생!!!!
             urlConn.doOutput
 //            서버에 값을보내줄준비
             val Os = OutputStreamWriter(urlConn.outputStream)
@@ -130,13 +132,5 @@ class ServerConnecter {
 //            Outputsream 비우기
             Os.flush()
         }
-
-        override fun onPostExecute(result: String?) {
-            super.onPostExecute(result)
-            SConn.result = result
-            SConn.isComplete = true
-            isWorking = false
-        }
-
     }
 }

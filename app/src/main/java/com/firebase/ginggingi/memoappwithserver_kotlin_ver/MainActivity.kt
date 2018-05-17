@@ -4,14 +4,12 @@ package com.firebase.ginggingi.memoappwithserver_kotlin_ver
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.LayoutManager
 import android.view.View
 import android.widget.Button
 import com.firebase.ginggingi.memoappwithserver_kotlin_ver.Adapter.MRecyclerViewAdaper
-import com.firebase.ginggingi.memoappwithserver_kotlin_ver.ConnServer.GetJson
 import com.firebase.ginggingi.memoappwithserver_kotlin_ver.DataModels.MemoDataModel
 import org.json.JSONArray
 import org.json.JSONException
@@ -20,18 +18,6 @@ import org.json.JSONObject
 /** [[[[[[[[[[[[[[[[[[[[end]]]]]]]]]]]]]]]]]]]]]*/
 
 class MainActivity : ActivityBase(), View.OnClickListener {
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.AddMemoBtn ->{
-                sendToAddView()
-            }
-        }
-    }
-
-    private fun sendToAddView() {
-        val intent = Intent(this, MemoAddActivity::class.java)
-        startActivity(intent)
-    }
 
     private val Tag : String = "MainActivity"
 
@@ -73,6 +59,19 @@ class MainActivity : ActivityBase(), View.OnClickListener {
         GJson.ParseJsonFromUrl()
     }
 
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.AddMemoBtn ->{
+                sendToAddView()
+            }
+        }
+    }
+
+    private fun sendToAddView() {
+        val intent = Intent(this, MemoAddActivity::class.java)
+        startActivity(intent)
+    }
+
     fun CompleteToGetJson(){
         makeJson(GJson.getResult())
 
@@ -90,6 +89,8 @@ class MainActivity : ActivityBase(), View.OnClickListener {
                 e.printStackTrace()
             }
         }
+        adapter.setItems(MDModelList)
+        adapter.notifyDataSetChanged()
     }
 
     fun makeJson(result: String?){

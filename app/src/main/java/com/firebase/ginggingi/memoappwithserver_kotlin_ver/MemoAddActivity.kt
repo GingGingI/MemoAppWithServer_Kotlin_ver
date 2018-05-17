@@ -15,8 +15,8 @@ class MemoAddActivity : ActivityBase(), View.OnClickListener{
     lateinit var TitleView: EditText
     lateinit var ContentView: EditText
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_addmemo)
 
         ViewInit()
