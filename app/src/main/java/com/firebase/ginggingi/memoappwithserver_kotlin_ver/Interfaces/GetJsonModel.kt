@@ -7,6 +7,8 @@ import com.firebase.ginggingi.memoappwithserver_kotlin_ver.MainActivity
  */
 interface GetJsonModel {
     fun InitDatas(url: String, mActivity: MainActivity)
+    fun ChangeURL(url: String)
     fun ParseJsonFromUrl()
+    fun ParseJsonFromUrl(datas: String)
     fun GiveJsonArr()
 }

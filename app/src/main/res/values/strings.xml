@@ -3,8 +3,16 @@
     <string name="action_settings">Settings</string>
 
     <!--Server -->
+    <string name="URL_Base">http://10.0.2.2:8000</string>
+    <string name="URL_ToSend">/sendData.php/</string>
+    <string name="URL_ToUpdate">/updateData.php/</string>
+    <string name="URL_ToDelete">/deleteData.php/</string>
     <!--Server End -->
 
+    <!-- Json -->
+    <string name="JsonName">memos</string>
+    <!-- JsonEnd -->
+    
     <!--Texts -->
     <string name="DeleteMemo">메모 지우기</string>
     <string name="DeleteMemoQuest">메모를 지우시겠습니까?</string>
